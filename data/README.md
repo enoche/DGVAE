@@ -4,6 +4,7 @@
 - [Baby on GDrive](https://drive.google.com/drive/folders/1eCvCmemwKBYNRHT3e0iPZCf2WM1v2Abz?usp=sharing)
 
 #### Pre-processing `baby` step-by-step
+0. Download raw dataset for `Amazon Product Review`: detailed steps --> [Amazon-Dataset](https://github.com/enoche/BM3/issues/9#issuecomment-1843973175)
 1. Multimodal feature extraction --> [MMRec](https://github.com/enoche/MMRec/tree/master/preprocessing)  
 <Generated files: :  `baby.inter`, `image_feat.npy`, `text_feat.npy`>
 2. Image --> Text mapping  with `CLIP` or `BLIP-2`
