@@ -211,6 +211,8 @@ def run(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument('-ddir', '--dataset_dir', type=str, default='./data',
+                        help='Dataset Dir')
     parser.add_argument('-ds', '--dataset', type=str, default='baby',
                         help='Dataset')
     parser.add_argument('-knn_k', '--knn_k', type=int, default=10,

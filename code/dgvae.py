@@ -38,7 +38,7 @@ class MacridVAE(nn.Module):
         super(MacridVAE, self).__init__()
         if reg_weights is None:
             reg_weights = [0.0, 0.0]
-        self.item_adj = item_adj
+        self.item_adj = item_adj.to_dense()
         self.num_items = num_items
         self.layers = layers
         self.emb_size = emb_size
@@ -78,12 +78,6 @@ class MacridVAE(nn.Module):
     def encode(self, input_rating):
         prototypes = fn.normalize(self.prototype_embeddings.weight, dim=1)
         items = fn.normalize(self.item_embeddings.weight, dim=1)
-        # # GNN
-        # h = self.item_embeddings.weight
-        # if self.item_adj is not None:
-        #     for i in range(1):
-        #         h = torch.sparse.mm(self.item_adj, h)
-        # items = fn.normalize(h, dim=1)
 
         cates_logits = items.matmul(prototypes.transpose(0, 1)) / self.tau
 
@@ -108,7 +102,7 @@ class MacridVAE(nn.Module):
             tmp_h = x_k
             if self.item_adj is not None:
                 for i in range(2):
-                    tmp_h = torch.mm(tmp_h, self.item_adj.to_dense())
+                    tmp_h = torch.mm(tmp_h, self.item_adj)
             x_k = self.dropout_layer((tmp_h+x_k)/2)
             #x_k = self.dropout_layer(x_k)
             h = self.encoder(x_k)
@@ -296,6 +290,11 @@ class DGVAE(nn.Module):
         self.text_total_anneal_steps = text_total_anneal_steps
         self.lambda_text = lambda_text
         self.lambda_reg = lambda_reg
+        tmp_idx = torch.LongTensor([[*range(0, self.num_words)], [*range(0, self.num_words)]])
+        tmp_v = torch.FloatTensor([1.]*self.num_words)
+        tmp_s = torch.Size([self.num_words, self.num_words])
+        vv = torch.sparse.FloatTensor(tmp_idx, tmp_v, tmp_s)
+        self.words_adj = vv.to(self.item_adj.get_device())
 
         self.cf_network = MacridVAE(item_adj=self.item_adj,
                                     num_items=self.num_items,
@@ -310,7 +309,7 @@ class DGVAE(nn.Module):
                                     reg_weights=self.reg_weights,
                                     total_anneal_steps=self.rating_total_anneal_steps)
 
-        self.text_network = MacridVAE(item_adj=None,
+        self.text_network = MacridVAE(item_adj=self.words_adj,
                                       num_items=self.num_words,
                                       layers=self.layers,
                                       emb_size=self.emb_size,

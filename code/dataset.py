@@ -62,25 +62,27 @@ def get_npz_file(file_path):
 
 def get_sparse_word_matrix(args):
     dataset = args.dataset
-    file_path = f'./data/{dataset}/{dataset}.user.words.tfidf.npz'
+    ddir = args.dataset_dir
+    file_path = f'{ddir}/{dataset}/{dataset}.user.words.tfidf.npz'
     return get_npz_file(file_path)
 
 
 def get_data(args, binary=True, num_workers=1, train_shuffle=True):
     dataset = args.dataset
+    ddir = args.dataset_dir
     batch_size = args.batch_size
 
-    train_path = f'./data/{dataset}/{dataset}.train.ratings'
-    val_path = f'./data/{dataset}/{dataset}.valid.ratings'
-    test_path = f'./data/{dataset}/{dataset}.test.ratings'
+    train_path = f'{ddir}/{dataset}/{dataset}.train.ratings'
+    val_path = f'{ddir}/{dataset}/{dataset}.valid.ratings'
+    test_path = f'{ddir}/{dataset}/{dataset}.test.ratings'
 
     train_inputs, train_targets = read_rating_file(train_path, binary=binary)
     val_inputs, val_targets = read_rating_file(val_path, binary=binary)
     test_inputs, test_targets = read_rating_file(test_path, binary=binary)
 
-    word_vocab = load_json(f'./data/{dataset}/{dataset}.vocab')
-    user_vocab = np.load(f'./data/{dataset}/{dataset}.uid.npy')
-    item_vocab = np.load(f'./data/{dataset}/{dataset}.iid.npy')
+    word_vocab = load_json(f'{ddir}/{dataset}/{dataset}.vocab')
+    user_vocab = np.load(f'{ddir}/{dataset}/{dataset}.uid.npy')
+    item_vocab = np.load(f'{ddir}/{dataset}/{dataset}.iid.npy')
 
     data_stats = {
         'num_users': len(user_vocab),
@@ -165,11 +167,13 @@ def get_knn_adj_mat(knn_k, mm_embeddings):
 
 
 def build_item_adj(args):
+    dataset = args.dataset
+    ddir = args.dataset_dir
     knn_k = args.knn_k
     txt_weight = args.txt_weight
-    t_feat_file_path = f'./data/{args.dataset}/text_feat.npy'
+    t_feat_file_path = f'{ddir}/{dataset}/text_feat.npy'
     t_feat = torch.from_numpy(np.load(t_feat_file_path, allow_pickle=True)).type(torch.FloatTensor)
-    v_feat_file_path = f'./data/{args.dataset}/image_feat.npy'
+    v_feat_file_path = f'{ddir}/{dataset}/image_feat.npy'
     v_feat = torch.from_numpy(np.load(v_feat_file_path, allow_pickle=True)).type(torch.FloatTensor)
     # sim matrix
     text_adj = get_knn_adj_mat(knn_k, t_feat)
