@@ -4,7 +4,10 @@
 Multimodal recommender systems amalgamate multimodal information (e.g., textual descriptions, images) into a collaborative filtering framework to provide more accurate recommendations. While the incorporation of multimodal information could enhance the interpretability of these systems, current multimodal models represent users and items utilizing entangled numerical vectors, rendering them arduous to interpret.
 To address this, we propose a Disentangled Graph Variational Auto-Encoder (`DGVAE`) that aims to enhance both model and recommendation interpretability. `DGVAE` initially projects multimodal information into textual contents, such as converting images to text, by harnessing state-of-the-art multimodal pre-training technologies. It then constructs a frozen item-item graph and encodes the contents and interactions into two sets of disentangled representations utilizing a simplified residual graph convolutional network. `DGVAE` further regularizes these disentangled representations through mutual information maximization, aligning the representations derived from the interactions between users and items with those learned from textual content.
 This alignment facilitates the interpretation of user binary interactions via text. Our empirical analysis conducted on three real-world datasets demonstrates that `DGVAE` significantly surpasses the performance of state-of-the-art baselines by a margin of 10.02%.
-We also furnish a case study from a real-world dataset to illustrate the interpretability of `DGVAE`. 
+We also furnish a case study from a real-world dataset to illustrate the interpretability of `DGVAE`.   
+
+Full paper: [arXiv](https://arxiv.org/abs/2402.16110).
+
 ### Model Arch.
 
 <p>
