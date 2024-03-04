@@ -6,7 +6,7 @@ To address this, we propose a Disentangled Graph Variational Auto-Encoder (`DGVA
 This alignment facilitates the interpretation of user binary interactions via text. Our empirical analysis conducted on three real-world datasets demonstrates that `DGVAE` significantly surpasses the performance of state-of-the-art baselines by a margin of 10.02%.
 We also furnish a case study from a real-world dataset to illustrate the interpretability of `DGVAE`.   
 
-Full paper: [arXiv](https://arxiv.org/abs/2402.16110).
+Full paper: [arXiv](https://arxiv.org/abs/2402.16110), [IEEE](https://doi.org/10.1109/TMM.2024.3369875)
 
 ### Model Arch.
 
